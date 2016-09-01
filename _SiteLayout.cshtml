@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@Page.Title - My ASP.NET Web Page</title>
+        <link href="~/Content/themes/base/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+        <!-- Custom styles for this template -->
+
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/Content/custom.css" rel="stylesheet">
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+        <script src="~/Scripts/jquery-ui-1.10.3.js"></script>
+        <script src="~/Scripts/modernizr-2.6.2.js"></script>
+        <script src="~/Scripts/knockout-2.3.0.js"></script>
+        <meta name="viewport" content="width=device-width" />
+    </head>
+    <body>
+            @RenderSection("featured", required: false)
+                @RenderBody()
+        <footer class="blog-footer">
+            
+        </footer>
+
+        @RenderSection("Scripts", required: false)
+    </body>
+</html>

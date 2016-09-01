@@ -1,0 +1,103 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "MedIQ Sample Page";
+}
+
+@section scripts{
+<script>
+$(document).ready(function () {
+
+    // loaded from controller action, ajax etc.
+    var qs = [{
+        "QuestionId": 1,
+        "QuestionHeadline": "First Headline",
+        "QuestionHeading": "Heading#1",
+        "QuestionText": "Some sample text for question #1. <br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquam leo eu volutpat aliquet. Praesent ex tortor, feugiat in magna id, dictum euismod augue. Curabitur pharetra nulla sed luctus placerat."
+    },
+  {
+      "QuestionId": 2,
+      "QuestionHeadline": "Second Headline",
+      "QuestionHeading": "Heading #2",
+      "QuestionText": "Some sample text for question #2. <p><b>Pellentesque quis eros bibendum</b>, mollis est in, efficitur nisi. Suspendisse quis purus justo. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>"
+  },
+  {
+      "QuestionId": 3,
+      "QuestionHeadline": "Third Headline",
+      "QuestionHeading": "Heading #3",
+      "QuestionText": "Some sample text for question #3. Ut sit amet ipsum dui. Cras sagittis nibh vel risus aliquet posuere. <i>Lorem ipsum</i> dolor sit amet, consectetur adipiscing elit. Donec facilisis elit augue, in accumsan dui malesuada vitae. "
+  },
+  {
+      "QuestionId": 4,
+      "QuestionHeadline": "Fourth Headline",
+      "QuestionHeading": "Heading #4",
+      "QuestionText": "Some sample text for question #4. <p>Cras nec mauris molestie, blandit tortor non, malesuada tortor. Suspendisse maximus finibus mattis. Integer scelerisque quis nisi nec venenatis.</p>"
+  }];
+
+    ko.bindingHandlers.draggable = {
+        init: function (element) {
+            $(element).draggable({
+                revert: true,
+                revertDuration: 0
+            });
+        }
+    };
+
+    ko.bindingHandlers.droppable = {
+        init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+            var $data = bindingContext.$data;
+            var value = valueAccessor();
+            $(element).droppable({
+                accept: value.accept,
+                activeClass: "highlight",
+                drop: function (event, ui) {
+                    $data.currentQuestion(ko.dataFor(ui.draggable[0]));
+                }
+            });
+        }
+    };
+
+
+    function exampleVm() {
+        var self = this;
+        self.questions = ko.observableArray(qs);
+        self.currentQuestion = ko.observable(self.questions()[0]);
+        self.applyContent = function (question) {
+            self.currentQuestion(question);
+        }
+    };
+    
+    ko.applyBindings(new exampleVm(), document.getElementById('exampleView'));
+
+});    
+
+</script>
+}
+
+<div class="blog-header">
+    <div class="container">
+        <h1 class="blog-title">MedIQ Sample Page</h1>
+        <p class="lead blog-description">Click or drag a question to read.</p>
+    </div>
+</div>
+<div class="container" id="exampleView">
+
+    <div class="row">
+
+        <div class="col-sm-8 blog-main dropTarget" data-bind="droppable:{accept: '.article'}, with:currentQuestion">
+            <h2 class="blog-pot-title" data-bind="text:QuestionHeadline"></h2>
+            <p class="blog-post-meta" data-bind="text:QuestionHeading"></p>
+            <div data-bind="html:QuestionText"></div>
+        </div>
+
+        <div class="col-sm-3 offset-sm-1 blog-sidebar">
+                <div class="sidebar-module">
+                <h4>Questions</h4>
+                <ol class="list-unstyled" data-bind="foreach: questions">
+                    <li><a href="#" class="article" data-bind="draggable: $data, click: $parent.applyContent, text:QuestionHeadline"></a></li>
+                </ol>
+            </div>
+        </div>
+
+    </div>
+
+</div>
